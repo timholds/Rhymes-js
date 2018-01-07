@@ -2,12 +2,15 @@
 # Imports
 #----------------------------------------------------------------------------#
 
-from flask import Flask, render_template, request
-# from flask.ext.sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request, send_file
+#import flask_restful
+from flask import Response
+from flask_restful import Api, Resource
 import logging
 from logging import Formatter, FileHandler
 from forms import *
 import os
+# from flask.ext.sqlalchemy import SQLAlchemy
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -15,6 +18,7 @@ import os
 
 app = Flask(__name__)
 app.config.from_object('config')
+api = Api(app)
 #db = SQLAlchemy(app)
 
 # Automatically tear down SQLAlchemy.
@@ -40,11 +44,101 @@ def login_required(test):
 # Controllers.
 #----------------------------------------------------------------------------#
 
-
 @app.route('/')
 def home():
-    return render_template('pages/placeholder.home.html')
+    return render_template('layouts/main.html')
+    #return render_template('pages/placeholder.home.html')
 
+@app.route('/cmudict.js')
+def cmudict():
+    try:
+        return send_file('/static/cmudict.js')
+    except Exception as e:
+        return str(e)
+
+@app.route('/data/hamilton.csv')
+def hamilton_data():
+    try:
+        return send_file('/static/data/hamilton.csv')
+    except Exception as e:
+        return str(e)
+
+@app.route('/data/readyornot.csv')
+def readyornot_data():
+    try:
+        return send_file('/static/data/readyornot.csv')
+    except Exception as e:
+        return str(e)
+
+@app.route('/data/penzance.csv')
+def penzance_data():
+    try:
+        return send_file('/static/data/penzance.csv')
+    except Exception as e:
+        return str(e)
+
+@app.route('/data/righthand.csv')
+def righthand_data():
+    try:
+        return send_file('/static/data/righthand.csv')
+    except Exception as e:
+        return str(e)
+
+@app.route('/data/bigpun.csv')
+def bigpun_data():
+    try:
+        return send_file('/static/data/bigpun.csv')
+    except Exception as e:
+        return str(e)
+
+@app.route('/data/nonstop.csv')
+def nonstop_data():
+    try:
+        return send_file('/static/data/nonstop.csv')
+    except Exception as e:
+        return str(e)
+
+@app.route('/data/rakim.csv')
+def rakim_data():
+    try:
+        return send_file('/static/data/rakim.csv')
+    except Exception as e:
+        return str(e)
+
+@app.route('/data/nas.csv')
+def nas_data():
+    try:
+        return send_file('/static/data/nas.csv')
+    except Exception as e:
+        return str(e)
+
+@app.route('/data/onyourside.csv')
+def onyourside_data():
+    try:
+        return send_file('/static/data/onyourside.csv')
+    except Exception as e:
+        return str(e)
+
+@app.route('/data/burrsir.csv')
+def burrsir_data():
+    try:
+        return send_file('/static/data/burrsir.csv')
+    except Exception as e:
+        return str(e)
+
+@app.route('/data/goodkid.csv')
+def goodkid_data():
+    try:
+        return send_file('/static/data/goodkid.csv')
+    except Exception as e:
+        return str(e)
+
+@app.route('/data/myshot.csv')
+def myshot_data():
+    try:
+        return send_file('/static/data/myshot.csv')
+    except Exception as e:
+        return str(e)
 
 @app.route('/about')
 def about():
@@ -97,7 +191,7 @@ if not app.debug:
 
 # Default port:
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
 
 # Or specify port manually:
 '''
@@ -105,3 +199,8 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
 '''
+
+class DataAPI(Resource):
+    def get(self, filename):
+        pass
+api.add_resource(DataAPI, '/data/<str:filename>', endpoint = 'user')
